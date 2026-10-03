@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    CollabCode - Real-Time Collaboration
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/style.css"
+  >
+
+</head>
+
+<body>
+
+  <!-- ================= LOGIN SCREEN ================= -->
+
+  <div id="loginScreen" class="screen">
+
+    <div class="login-card">
+
+      <div class="logo">
+        CC
+      </div>
+
+      <h1>
+        CollabCode
+      </h1>
+
+      <p>
+        Real-time coding and note-taking workspace
+      </p>
+
+
+      <label for="nameInput">
+        Your Name
+      </label>
+
+      <input
+        id="nameInput"
+        maxlength="30"
+        placeholder="Enter your name"
+      >
+
+
+      <label for="roomInput">
+        Room ID
+      </label>
+
+      <input
+        id="roomInput"
+        placeholder="Leave empty to create a room"
+      >
+
+
+      <div class="login-actions">
+
+        <button
+          id="createRoomBtn"
+          class="secondary"
+        >
+          Create Room
+        </button>
+
+        <button
+          id="joinBtn"
+          class="primary"
+        >
+          Join Room
+        </button>
+
+      </div>
+
+      <p
+        id="loginError"
+        class="error"
+      ></p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= MAIN APPLICATION ================= -->
+
+  <div id="app" class="hidden">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+      <div class="brand">
+
+        <div class="brand-icon">
+          CC
+        </div>
+
+        <div>
+
+          <strong>
+            CollabCode
+          </strong>
+
+          <span id="roomLabel">
+            Room
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="top-actions">
+
+        <span
+          id="connectionStatus"
+          class="status offline"
+        >
+          ● Offline
+        </span>
+
+        <button id="copyLinkBtn">
+          Copy Invite Link
+        </button>
+
+        <button
+          id="leaveBtn"
+          class="danger"
+        >
+          Leave
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- MAIN WORKSPACE -->
+
+    <main class="workspace">
+
+
+      <!-- ================= SIDEBAR ================= -->
+
+      <aside class="sidebar">
+
+
+        <section>
+
+          <div class="section-title">
+
+            <span>
+              ROOM
+            </span>
+
+            <span id="roomIdDisplay"></span>
+
+          </div>
+
+        </section>
+
+
+        <!-- USERS -->
+
+        <section>
+
+          <div class="section-title">
+
+            <span>
+              ONLINE USERS
+            </span>
+
+            <span id="userCount">
+              0
+            </span>
+
+          </div>
+
+          <div id="usersList"></div>
+
+        </section>
+
+
+        <!-- LANGUAGE -->
+
+        <section>
+
+          <div class="section-title">
+            LANGUAGE
+          </div>
+
+          <select id="languageSelect">
+
+            <option value="javascript">
+              JavaScript
+            </option>
+
+            <option value="python">
+              Python
+            </option>
+
+            <option value="java">
+              Java
+            </option>
+
+            <option value="cpp">
+              C++
+            </option>
+
+            <option value="html">
+              HTML
+            </option>
+
+            <option value="css">
+              CSS
+            </option>
+
+            <option value="plaintext">
+              Plain Text / Notes
+            </option>
+
+          </select>
+
+        </section>
+
+
+        <!-- FEATURES -->
+
+        <section class="tips">
+
+          <div class="section-title">
+            FEATURES
+          </div>
+
+          <ul>
+
+            <li>
+              Live multi-user editing
+            </li>
+
+            <li>
+              Room-based collaboration
+            </li>
+
+            <li>
+              Typing indicators
+            </li>
+
+            <li>
+              Online user list
+            </li>
+
+            <li>
+              Language selection
+            </li>
+
+            <li>
+              Live chat
+            </li>
+
+          </ul>
+
+        </section>
+
+      </aside>
+
+
+      <!-- ================= EDITOR ================= -->
+
+      <section class="editor-area">
+
+
+        <div class="editor-toolbar">
+
+          <div>
+
+            <strong id="fileName">
+              collaboration.js
+            </strong>
+
+            <span id="typingText"></span>
+
+          </div>
+
+
+          <div class="toolbar-actions">
+
+            <button id="clearBtn">
+              Clear
+            </button>
+
+            <button id="downloadBtn">
+              Download
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="editor-wrapper">
+
+          <div
+            id="lineNumbers"
+            class="line-numbers"
+          >
+            1
+          </div>
+
+
+          <textarea
+            id="editor"
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="// Start typing. Everyone in this room sees updates in real time..."
+          ></textarea>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================= CHAT ================= -->
+
+      <aside class="chat-panel">
+
+        <div class="chat-header">
+
+          <strong>
+            Team Chat
+          </strong>
+
+          <span id="chatCount">
+            0
+          </span>
+
+        </div>
+
+
+        <div
+          id="messages"
+          class="messages"
+        ></div>
+
+
+        <form
+          id="chatForm"
+          class="chat-form"
+        >
+
+          <input
+            id="chatInput"
+            maxlength="500"
+            placeholder="Message your team..."
+          >
+
+          <button type="submit">
+            Send
+          </button>
+
+        </form>
+
+      </aside>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+      <span>
+        Socket.IO real-time collaboration
+      </span>
+
+      <span id="saveStatus">
+        All changes synced
+      </span>
+
+    </footer>
+
+  </div>
+
+
+  <!-- Socket.IO -->
+
+  <script src="/socket.io/socket.io.js"></script>
+
+  <!-- Application JavaScript -->
+
+  <script src="/app.js"></script>
+
+</body>
+
+</html>
